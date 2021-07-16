@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{ meetup.title}} {% endblock %}
+{% block site_css %}
+		<link rel="stylesheet"  href="{% static 'css/all-meetup.css' %}">
+		<link rel="stylesheet"  href="{% static 'css/meetup-details.css' %}"> 
+{% endblock %}
+{% block main_heading%} {{ meetup.title}} {% endblock %}
+{% block header-content %}details{% endblock %}
+
+{% block body %}
+	{% if meetup_found %}
+		<article>
+				<img src="{{ meetup.image.url }}" id="main-image">
+				<section id="location">
+					<h2> Meetup Location</h2>
+					<address>This Meetup take place in <span>{{ meetup.location.name }}</span></address>
+				</section>
+				<section id="details">
+					<h2>What's this Meetup About!</h2>
+					<p>{{ meetup.description }}</p>
+					<footer>
+						<h3> Need More details ? Please  <a href="mailto:{{meetup.organizer_email}}" class="contact"> Contact the Organizer</a></h3>
+					</footer>
+				</section>
+				<section id="registartion">
+					<h2>Join Us</h2>
+					<form action="{% url 'meetup-detail' meetup.slug %}" method="POST">
+						{% csrf_token %}
+						<ul>
+							{{ form.as_ul }} 
+							<!-- as_ul is method , you don't need to () -->
+							<div id="registration-actions">
+								<button>Register</button>
+							</div>
+							</ul>
+					</form>
+				</section>
+
+			</article>
+	{% else %} <p> Not found any Meetups!!</p>
+	{% endif %}
+{% endblock %}
+
+	
